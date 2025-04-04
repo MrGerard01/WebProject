@@ -1,15 +1,14 @@
 [project]
-name = "djangoproject1"
+name = "djangoproject2"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "David Sarrat González",email = "113605621+davidsarratgonzalez@users.noreply.github.com"}
+    {name = "Bogdan2005-19",email = "stefbogdanicolae@gmail.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "django (>=5.1.5,<6.0.0)",
-    "numpy (==2.2.1)"
+    "django (>=5.2,<6.0)"
 ]
 
 
