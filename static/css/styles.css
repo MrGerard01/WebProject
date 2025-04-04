@@ -1,0 +1,101 @@
+body {
+    background-image: url("images/background.jpg");  /* Ruta a la imagen */
+    background-size: cover; /* Asegura que la imagen cubra el fondo */
+    background-position: center; /* Centra la imagen */
+    background-attachment: fixed;
+    height: 100vh; /* Asegura que ocupe toda la altura de la ventana */
+    margin: 0;
+    padding: 0;
+}
+strong {
+    vertical-align: middle;
+}
+.content-container {
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
+    padding: 20px;
+    width: 90%;  /* Ajusta el ancho del contenedor */
+    margin: 50px auto;  /* Centra el contenedor en la página */
+    border-radius: 10px;  /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Sombra alrededor del contenedor */
+}
+/*-----------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------*/
+/*--------------------|Estilos para los botones de regreso|--------------------------*/
+.back-button {
+    background-color: #6c5ce7;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+.back-button a {
+    color: white;
+}
+.back-button:hover {
+    background-color: #4834d4;
+}
+/*-----------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------*/
+/*------------------|Estilos para las vistas de los juegos|--------------------------*/
+.game-card {
+    display: inline-block;
+    width: 150px;  /* Tamaño de cada tarjeta */
+    margin: 10px;  /* Espacio entre los juegos */
+    text-align: center;
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    text-decoration: none;
+    color: inherit;
+}
+.game-card:hover {
+    transform: scale(1.05);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+}
+.game-card h3 {
+    font-size: 16px;  /* Tamaño de la letra */
+    font-weight: bold;
+    margin-top: 8px;  /* Espacio entre la imagen y el título */
+    white-space: nowrap;  /* Evita que el texto se divida en varias líneas */
+    overflow: hidden;  /* Oculta el texto que se desborda */
+    text-overflow: ellipsis;  /* Muestra '...' cuando el texto es demasiado largo */
+    width: 100%;  /* Asegúrate de que ocupe el ancho disponible de la tarjeta */
+    text-align: center;  /* Centra el texto */
+}
+.game-card img {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+/*-----------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------*/
+/*-----------------|Estilos para los detalles de los juegos|-------------------------*/
+.game-details-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-width: 1100px;
+}
+.game-details-image {
+    width: 200px; /* o el tamaño que prefieras */
+    height: 350px; /* mantiene la proporción */
+    border-radius: 8px; /* esquinas redondeadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* sombra suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.game-details-image:hover {
+    transform: scale(1.05); /* efecto de zoom al pasar el ratón */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+.rating-badge {
+    background-color: #dc3545; /* Rojo */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    vertical-align: middle; /* Esta es la clave */
+    line-height: 1; /* Esto también ayuda a que no tenga más altura de la necesaria */
+}

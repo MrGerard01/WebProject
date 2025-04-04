@@ -1,0 +1,44 @@
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+}
+.pagination.current {
+    font-weight: bold;
+}
+.pagination-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+.pagination-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pagination-button button {
+    display: block;
+    padding: 100px 10px;
+    background-color: #6c5ce7;
+    color: white;
+    border-radius: 4px;
+    transition: transform 0.3s ease-in-out;
+}
+.pagination-button button:hover {
+    background-color: #4834d4;
+    transform: scale(1.05);
+}
+.pagination-button button:disabled {
+    display: block;
+    padding: 100px 10px;
+    background-color: #dfe6e9;  /* Color gris para el botón deshabilitado */
+    color: #636e72;  /* Color gris claro para el texto */
+    border-radius: 4px;
+    pointer-events: none;  /* Esto evita que el usuario pueda hacer clic */
+    transition: background-color 0.3s ease;
+}
