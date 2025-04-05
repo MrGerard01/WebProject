@@ -1,0 +1,11 @@
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.log
+*.pot
+*.pyc
+*.pyo
+*.db
+.DS_Store       # macOS
+Thumbs.db       # Windows
