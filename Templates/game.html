@@ -9,9 +9,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ juego.titulo }}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
 </head>
-<body class="container py-1 game-details-card">
-    <div class="content-container">
+<body class="container py-3d">
+    <header>
+        <a href="{% url 'home' %}" class="logo">MyGameList</a>
+        <div>
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="button">Cerrar sesión</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="button">Iniciar sesión</a>
+                <a href="{% url 'register' %}" class="button">Registrarse</a>
+            {% endif %}
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar  juegos...">
+            </div>
+        </div>
+    </header>
+    <div class="content-container game-details-card">
         <div class="back-button">
             <a href="{% url 'home'%}">
                 <h3>&longleftarrow;Volver</h3>
@@ -38,6 +56,5 @@
         </div>
         {% block content %}{% endblock %}
     </div>
-    {% block script %}{% endblock %}
 </body>
 </html>
