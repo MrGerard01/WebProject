@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
+from django.contrib.sites import requests
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,6 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web.apps.WebConfig',
     'django.contrib.admin',
+    'imagekit',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'django_bootstrap5',
+
 ]
 
 MIDDLEWARE = [

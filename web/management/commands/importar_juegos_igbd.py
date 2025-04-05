@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from common.utils import importar_juegos_desde_igbd
+from web.utils import importar_juegos_desde_igdb
 
 class Command(BaseCommand):
     help = "Importa videojuegos desde la API de IGDB"

@@ -1,10 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %} MyGameList_1.0 {% endblock %}
+{% block content %}
+    <div class="p-5 border border-1 shadow rounded">
+        <h1>MyGameList</h1>
+        <p>MyGameList es la plataforma definitiva para los amantes de los videojuegos. 
+            Aquí puedes descubrir, organizar y compartir tu colección de juegos favoritos, 
+            leer reseñas de la comunidad y explorar títulos según tus géneros preferidos.
+            <br>
+            Ya seas un fanático de los RPG, los shooters frenéticos o los juegos de estrategia, 
+            en MyGameList encontrarás un espacio donde tu pasión por los videojuegos cobra vida. 
+            Registra los juegos que has jugado, los que quieres jugar y mantente al día con las 
+            últimas tendencias del mundo gaming.</p>
+    </div>
+    <div style="display: flex; justify-content: space-around;">
+        <div>
+            <h2>Filtrar por Género</h2>
+            <div class="sidebar">
+                <div class="gen_button">
+                    <a href="{% url 'home' %}"><button {% if not genero_actual %}disabled{% endif %}>Todos</button></a>
+                    {% for genero in generos %}
+                        <a href="{% url 'games_by_genre' category=genero.nombre|slugify %}">
+                            <button {% if genero.nombre == genero_actual %}disabled{% endif %}>{{ genero.nombre }}</button>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2 style="text-align: center">Juegos Disponibles</h2>
+        
+            <div class="game-container">
+                {% for juego in page_obj %}
+                    {% include 'game_card.html' %}
+                {% empty %}
+                    <p>No hay juegos disponibles.</p>
+                {% endfor %}
+            </div>
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}
+            
+                <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+            
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

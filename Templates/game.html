@@ -1,0 +1,43 @@
+{% load static %}
+{% load django_bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% bootstrap_css %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ juego.titulo }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body class="container py-1 game-details-card">
+    <div class="content-container">
+        <div class="back-button">
+            <a href="{% url 'home'%}">
+                <h3>&longleftarrow;Volver</h3>
+            </a>
+        </div>
+        <div class="p-5 border border-1 shadow rounded">
+            <div>
+                <h1>{{ juego.titulo }}</h1>
+            </div>
+            <div style="display: flex; margin-top: 20px;">
+                <img class="game-details-image" src="{{ juego.portada }}" style="width: 300px" alt="Imagen de {{ juego.titulo }}">
+                <div style="margin-left: 50px; margin-right: 10px">
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <h5><strong>Fecha de lanzamiento: {{ juego.fecha_lanzamiento }} </strong></h5>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <p><strong>Rating:</strong> <span class="rating-badge">{{ juego.rating|floatformat:1 }}</span></p>
+                    </div>
+                    <p>
+                        {{ juego.descripcion }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% block content %}{% endblock %}
+    </div>
+    {% block script %}{% endblock %}
+</body>
+</html>
