@@ -1,14 +1,22 @@
+{% load static %}
+{% load django_bootstrap5 %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% bootstrap_css %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
+    <header>
+        <a href="{% url 'home' %}" class="logo">MyGameList</a>
+    </header>
     <div class="register-container">
         <h2>Regístrate</h2>
-
         <form method="POST">
             {% csrf_token %}
             <!-- Campo para el nombre de usuario -->
