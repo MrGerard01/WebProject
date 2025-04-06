@@ -1,0 +1,61 @@
+{% load static %}
+{% load django_bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% bootstrap_css %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}" class="logo">MyGameList</a>
+    </header>
+    <div class="login-container">
+        <h2>Iniciar sesión</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <!-- Campo para el nombre de usuario -->
+            <div class="form-group">
+                <label for="id_username">Nombre de usuario</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <ul class="error-list">
+                        {% for error in form.username.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <!-- Campo para la contraseña -->
+            <div class="form-group">
+                <label for="id_password">Contraseña</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <ul class="error-list">
+                        {% for error in form.password.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <!-- Mostrar errores generales (si hay) -->
+            {% if form.non_field_errors %}
+                <ul class="error-list">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <!-- Botón para enviar el formulario -->
+            <button type="submit">Iniciar sesión</button>
+        </form>
+        <p>¿Nuevo en la página? <a href="{% url 'register' %}">Registrate aquí</a></p>
+    </div>
+</body>
+</html>

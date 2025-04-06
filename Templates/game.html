@@ -1,0 +1,60 @@
+{% load static %}
+{% load django_bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% bootstrap_css %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ juego.titulo }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+</head>
+<body class="container py-3d">
+    <header>
+        <a href="{% url 'home' %}" class="logo">MyGameList</a>
+        <div>
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="button">Cerrar sesión</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="button">Iniciar sesión</a>
+                <a href="{% url 'register' %}" class="button">Registrarse</a>
+            {% endif %}
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar  juegos...">
+            </div>
+        </div>
+    </header>
+    <div class="content-container game-details-card">
+        <div class="back-button">
+            <a href="{% url 'home'%}">
+                <h3>&longleftarrow;Volver</h3>
+            </a>
+        </div>
+        <div class="p-5 border border-1 shadow rounded">
+            <div>
+                <h1>{{ juego.titulo }}</h1>
+            </div>
+            <div style="display: flex; margin-top: 20px;">
+                <img class="game-details-image" src="{{ juego.portada }}" style="width: 300px" alt="Imagen de {{ juego.titulo }}">
+                <div style="margin-left: 50px; margin-right: 10px">
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <h5><strong>Fecha de lanzamiento: {{ juego.fecha_lanzamiento }} </strong></h5>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <p><strong>Rating:</strong> <span class="rating-badge">{{ juego.rating|floatformat:1 }}</span></p>
+                    </div>
+                    <p>
+                        {{ juego.descripcion }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
