@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+import requests
 from django.core.paginator import Paginator
 from django.http import HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
@@ -8,21 +9,24 @@ from web.models import Videojuego, Genero, Usuario
 
 
 def home(request, category=None):
-    """Lista de videojuegos, filtrados por género si se proporciona uno"""
-    videojuegos = Videojuego.objects.all().order_by('titulo')
-    generos = Genero.objects.all()
+    API_KEY = 'pub_78670cd98ade92c551cac37a394250f26037d'  # 🔐 Reemplázala con tu key
+    URL = 'https://newsdata.io/api/1/news'
 
-    videojuegos, category = filtrar_genero(videojuegos, category, generos)
+    noticias = []
+    try:
+        params = {
+            'apikey': API_KEY,
+            'q': 'videojuegos OR gaming',
+            'language': 'es',
+            'category': 'technology'
+        }
+        response = requests.get(URL, params=params)
+        if response.status_code == 200:
+            noticias = response.json().get('results', [])[:6]  # Solo mostramos 7 noticias
+    except Exception as e:
+        print(f"Error al obtener noticias: {e}")
 
-    game_pagination = Paginator(videojuegos, 20)
-    page_number = request.GET.get('page')
-    page_obj = game_pagination.get_page(page_number)
-
-    return render(request, "home.html", {
-        "page_obj": page_obj,
-        "generos": generos,
-        "genero_actual": category,
-    })
+    return render(request, 'home.html', {'noticias': noticias})
 
 def game(request, pk):
     juego = get_object_or_404(Videojuego, pk=pk)

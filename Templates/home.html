@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/genres.css' %}">
     <link rel="stylesheet" href="{% static 'css/pagination.css' %}">
+    <link rel="stylesheet" href="{% static 'css/noticias.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -22,41 +23,31 @@
             Registra los juegos que has jugado, los que quieres jugar y mantente al día con las 
             últimas tendencias del mundo gaming.</p>
     </div>
-    <div style="display: flex; justify-content: space-around;">
-        <div>
-            <h2>Filtrar por Género</h2>
-            <div class="sidebar">
-                <div class="gen_button">
-                    <a href="{% url 'home' %}"><button {% if not genero_actual %}disabled{% endif %}>Todos</button></a>
-                    {% for genero in generos %}
-                        <a href="{% url 'games_by_genre' category=genero.nombre|slugify %}">
-                            <button {% if genero.nombre == genero_actual %}disabled{% endif %}>{{ genero.nombre }}</button>
+    <h2>📰 Noticias recientes sobre videojuegos</h2>
+    <div class="noticias-container">
+        {% for noticia in noticias %}
+            <div class="noticia">
+                {% if noticia.image_url %}
+                    <img src="{{ noticia.image_url }}" alt="Imagen noticia">
+                {% endif %}
+                <div class="contenido">
+                    <h3>
+                        <a href="{{ noticia.link }}" target="_blank" rel="noopener noreferrer">
+                            {{ noticia.title }}
                         </a>
-                    {% endfor %}
+                    </h3>
+                    <p class="meta">
+                        🖋️ {{ noticia.creator.0|default:"Autor desconocido" }} |
+                        📰 {{ noticia.source_id|capfirst }} |
+                        🗓️ {{ noticia.pubDate|date:"d M Y H:i" }}
+                    </p>
+                    <p class="descripcion">
+                        {{ noticia.description|default:"Sin descripción disponible."|truncatewords:25 }}
+                    </p>
+                    <a href="{{ noticia.link }}" target="_blank" class="leer-mas">Leer más →</a>
                 </div>
             </div>
-        </div>
-        <div>
-            <h2 style="text-align: center">Juegos Disponibles</h2>
-
-            <div class="game-container">
-                {% for juego in page_obj %}
-                    {% include 'partials/game_card.html' %}
-                {% empty %}
-                    <p>No hay juegos disponibles.</p>
-                {% endfor %}
-            </div>
-            <div class="pagination">
-                {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
-                {% endif %}
-
-                <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
-                {% endif %}
-            </div>
-        </div>
+            <hr>
+        {% endfor %}
     </div>
 {% endblock %}
