@@ -12,18 +12,24 @@
 {% endblock %}
 
 {% block content %}
-    <div class="p-5 border border-1 shadow rounded">
-        <h1>MyGameList</h1>
-        <p>MyGameList es la plataforma definitiva para los amantes de los videojuegos. 
-            Aquí puedes descubrir, organizar y compartir tu colección de juegos favoritos, 
-            leer reseñas de la comunidad y explorar títulos según tus géneros preferidos.
-            <br>
-            Ya seas un fanático de los RPG, los shooters frenéticos o los juegos de estrategia, 
-            en MyGameList encontrarás un espacio donde tu pasión por los videojuegos cobra vida. 
-            Registra los juegos que has jugado, los que quieres jugar y mantente al día con las 
-            últimas tendencias del mundo gaming.</p>
+    <h2 class="p-5 border border-1 shadow rounded">Bienvenido a MyGameList</h2>
+    <hr>
+    <div class="search-bar">
+        <form action="{% url 'game_list' %}" method="get" class="search-bar">
+            <input type="text" name="q" placeholder="Buscar juegos... " value="{{ request.GET.busqueda }}">
+            <button type="submit">Buscar</button>
+        </form>
     </div>
-    <h2>📰 Noticias recientes sobre videojuegos</h2>
+    <h3>Juegos mejor valorados</h3>
+    <div class="game-container">
+        {% for juego in videojuegos %}
+            {% include 'partials/game_card.html' %}
+        {% empty %}
+            <p>No hay juegos disponibles.</p>
+        {% endfor %}
+    </div>
+    <hr>
+    <h3>Noticias recientes sobre videojuegos</h3>
     <div class="noticias-container">
         {% for noticia in noticias %}
             <div class="noticia">
@@ -44,7 +50,6 @@
                     <p class="descripcion">
                         {{ noticia.description|default:"Sin descripción disponible."|truncatewords:25 }}
                     </p>
-                    <a href="{{ noticia.link }}" target="_blank" class="leer-mas">Leer más →</a>
                 </div>
             </div>
             <hr>

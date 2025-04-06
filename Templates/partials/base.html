@@ -25,13 +25,6 @@
                 <a href="{% url 'login' %}" class="button">Iniciar sesión</a>
                 <a href="{% url 'register' %}" class="button">Registrarse</a>
             {% endif %}
-
-            <div class="search-bar">
-                <form action="{% url 'game_list' %}" method="get" class="search-bar">
-                    <input type="text" name="q" placeholder="Buscar juegos... " value="{{ request.GET.busqueda }}">
-                    <button type="submit">Buscar</button>
-                </form>
-            </div>
         </div>
     </header>
     <div class="content-container">

@@ -8,25 +8,48 @@ from web.forms import AuthenticationForm, RegistrationForm
 from web.models import Videojuego, Genero, Usuario
 
 
-def home(request, category=None):
-    API_KEY = 'pub_78670cd98ade92c551cac37a394250f26037d'  # 🔐 Reemplázala con tu key
+def home(request):
+    API_KEY = 'pub_78670010e7e9dc763d072171bfec442ce08dc'  # 🔐 Reemplázala con tu key
     URL = 'https://newsdata.io/api/1/news'
 
     noticias = []
     try:
         params = {
             'apikey': API_KEY,
-            'q': 'videojuegos OR gaming',
+            'q': 'videojuegos',
             'language': 'es',
-            'category': 'technology'
+            'category': 'technology',
         }
         response = requests.get(URL, params=params)
-        if response.status_code == 200:
-            noticias = response.json().get('results', [])[:6]  # Solo mostramos 7 noticias
-    except Exception as e:
-        print(f"Error al obtener noticias: {e}")
+        response.raise_for_status()  # Lanza una excepción si el código de estado no es 200
+        resultados = response.json().get('results', [])  # Solo mostramos 8 noticias
 
-    return render(request, 'home.html', {'noticias': noticias})
+        # Usamos un conjunto para almacenar títulos únicos
+        titulos_vistos = set()
+        noticias_unicas = []
+
+        for noticia in resultados:
+            titulo = noticia['title']
+
+            # Si el título no se ha visto antes, lo añadimos a la lista de noticias únicas
+            if titulo not in titulos_vistos:
+                titulos_vistos.add(titulo)
+                noticias_unicas.append(noticia)
+
+        noticias = noticias_unicas[:4]
+    except requests.exceptions.RequestException as e:
+        print(f"Error al obtener noticias: {e}")
+    except ValueError as e:
+        print(f"Error al procesar los datos JSON: {e}")
+    except Exception as e:
+        print(f"Error inesperado: {e}")
+
+    videojuegos = Videojuego.objects.all().order_by('-rating')[:6]
+
+    return render(request, 'home.html', {
+        'noticias': noticias,
+        'videojuegos': videojuegos,
+    })
 
 def game(request, pk):
     juego = get_object_or_404(Videojuego, pk=pk)

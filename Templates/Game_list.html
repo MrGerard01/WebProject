@@ -11,6 +11,13 @@
 {% endblock %}
 
 {% block content %}
+    <div class="search-bar">
+        <form action="{% url 'game_list' %}" method="get" class="search-bar">
+            <input type="text" name="q" placeholder="Buscar juegos... " value="{{ request.GET.busqueda }}">
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+    <hr>
     <div style="display: flex; justify-content: space-around;">
         <div>
             <h2>Filtrar por Género</h2>
