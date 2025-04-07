@@ -31,7 +31,7 @@
     </header>
     <div class="content-container game-details-card">
         <div class="back-button">
-            <a href="{% url 'home'%}">
+            <a href="{% url 'game_list'%}">
                 <h3>&longleftarrow;Volver</h3>
             </a>
         </div>
@@ -54,7 +54,13 @@
                 </div>
             </div>
         </div>
-        {% block content %}{% endblock %}
+        <hr>
+        <div>
+            <h3>Juegos similares</h3>
+            {% for juego in similares %}
+                {% include 'partials/game_card.html' %}
+            {% endfor %}
+        </div>
     </div>
 </body>
 </html>

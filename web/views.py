@@ -53,7 +53,20 @@ def home(request):
 
 def game(request, pk):
     juego = get_object_or_404(Videojuego, pk=pk)
-    return render(request, "game.html", {"juego": juego})
+
+    genero = juego.genero.first()
+    print(genero)
+    similares = (
+        Videojuego.objects.filter(genero__nombre__icontains=genero).exclude(pk=juego.pk)[:6]
+        if genero else []
+    )
+
+    print(similares)
+
+    return render(request, "game.html", {
+        "juego": juego,
+        "similares": similares,
+    })
 
 def game_list(request, category=None):
     query = request.GET.get('q')  # Obtiene lo que el usuario escribió
