@@ -25,7 +25,7 @@ A video game review platform inspired by MyAnimeList. Built with Django and Post
 ## 🛠 Tech Stack
 
 - Python 3.11
-- Django 5.x
+- Django
 - SQLite
 - HTML/CSS (with Bootstrap)
 - JavaScript
@@ -37,8 +37,8 @@ A video game review platform inspired by MyAnimeList. Built with Django and Post
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/your-project.git
-   cd your-project
+   git clone https://github.com/MrGerard01/WebProject.git
+   cd WebProject
 2. **Install dependencies with poetry:**
    ```bash
    poetry install
