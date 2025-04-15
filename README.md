@@ -39,9 +39,12 @@ A video game review platform inspired by MyAnimeList. Built with Django and Post
    ```bash
    git clone https://github.com/your-username/your-project.git
    cd your-project
-2. **Install dependencies:**
+2. **Install dependencies with poetry:**
    ```bash
    poetry install
+3. **Install dependencies with docker:**
+   ```bash
+   docker-compose up --build
    
 ## 💻 Usage
 
