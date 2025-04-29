@@ -16,6 +16,7 @@
         <a href="{% url 'home' %}" class="logo">MyGameList</a>
         <div>
             {% if user.is_authenticated %}
+                <p>{{ user.username }}</p>
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="button">Cerrar sesión</button>

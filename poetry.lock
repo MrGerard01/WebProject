@@ -254,6 +254,17 @@ files = [
 all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2)"]
 
 [[package]]
+name = "network"
+version = "0.1"
+description = "A very simple networking library written by David Whale (@whaleygeek)."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "network-0.1.tar.gz", hash = "sha256:786b171895c3ecaaf05948c29e206ab99285f328f799c3bbc5e22a2805bfc27f"},
+]
+
+[[package]]
 name = "pilkit"
 version = "3.0"
 description = "A collection of utilities and processors for the Python Imaging Library."
@@ -429,4 +440,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13"
-content-hash = "eea6d4ad438bda3edb12d4e0792f789d01616330d2c197328037fc7ae4486d97"
+content-hash = "89787f01a3a915301afc247d57af041aaf63aaa9d83e9f1290b68aadaaee968f"

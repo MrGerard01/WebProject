@@ -1,5 +1,7 @@
-from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
+
 
 # Create your models here.
 class Genero(models.Model):
@@ -18,21 +20,18 @@ class Videojuego(models.Model):
     def __str__(self):
         return self.titulo
 
-class Usuario(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
-    email = models.CharField('Correo', max_length=100)
-    contrasena = models.CharField('Contrasena', max_length=100)
-    avatar = models.ImageField(null=True, blank=True)
-    juegos_guardados = models.ManyToManyField(Videojuego, blank=True)
-    def __str__(self):
-        return self.usuario.username
-
 class Review(models.Model):
     titulo = models.CharField('Título', max_length=255)
     rating = models.FloatField(null=True, blank=True)
     descripcion = models.TextField(null=True, blank=True)
     videojuego = models.ForeignKey(Videojuego, on_delete=models.CASCADE)  # Permitimos múltiples reviews por juego
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews')
     fecha_review = models.DateField(null=True, blank=True)
     def __str__(self):
         return self.titulo
+
+class CustomUser(AbstractUser):
+    avatar = models.ImageField('Avatar', null=True, blank=True, upload_to='avatars/')
+    juegos_guardados = models.ManyToManyField('Videojuego', blank=True)
+    def __str__(self):
+        return self.username

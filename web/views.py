@@ -3,9 +3,12 @@ import requests
 from django.core.paginator import Paginator
 from django.http import HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.utils.text import slugify
-from web.forms import AuthenticationForm, RegistrationForm
-from web.models import Videojuego, Genero, Usuario
+from django.views.generic import CreateView
+
+from web.forms import CustomUserCreationForm
+from web.models import Videojuego, Genero
 
 
 def home(request):
@@ -105,36 +108,7 @@ def filtrar_genero(videojuegos, category, generos):
             videojuegos = Videojuego.objects.none()
     return videojuegos, category
 
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')  # Redirige a la página de inicio o cualquier URL que desees
-            else:
-                form.add_error(None, 'Usuario o contraseña incorrectos')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
-
-def register_view(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            # Guardamos el usuario
-            user = form.save()
-
-            Usuario.objects.create(usuario=user, email=user.email)
-            login(request, user)
-            return redirect('home')
-    else:
-        form = RegistrationForm()
-    return render(request, 'register.html', {'form': form})
-
-def logout_view(request: HttpRequest):
-    logout(request)
-    return redirect('home')
+class register_view(CreateView):
+    form_class = CustomUserCreationForm
+    success_url = reverse_lazy("login")
+    template_name = "register.html"

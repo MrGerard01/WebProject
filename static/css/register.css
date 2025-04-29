@@ -1,159 +1,78 @@
-/* Contenedor principal del formulario */
-.register-container {
-    width: 100%;
-    max-width: 420px; /* Ancho máximo del formulario */
-    margin: 0 auto; /* Centrado horizontal */
-    padding: 20px;
-    background-color: #1e1e1e; /* Fondo oscuro */
-    border-radius: 8px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    color: #fff; /* Texto blanco para que contraste con el fondo oscuro */
-    position: absolute;
-    top: 50%; /* Posiciona el contenedor a la mitad de la pantalla */
-    left: 50%; /* Posiciona el contenedor a la mitad de la pantalla */
-    transform: translate(-50%, -50%); /* Ajusta la posición para centrar completamente */
-    animation: slideIn 0.5s ease-out;
-}
-
-/* Título del formulario */
-.register-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 26px;
-    font-family: 'Press Start 2P', cursive; /* Fuente tipo pixel art */
-    color: #FF5722; /* Color vibrante para el título */
-}
-
-/* Estilo para los grupos de formularios */
-.form-group {
-    margin-bottom: 20px;
-}
-
-/* Estilo para las etiquetas */
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #FFEB3B; /* Color amarillo para etiquetas */
-}
-
-/* Estilo para los campos de entrada */
-.form-group input {
-    width: 100%;
-    padding: 12px;
-    font-size: 18px;
-    border: 1px solid #FFEB3B; /* Borde amarillo */
-    border-radius: 4px;
-    background-color: #333;
-    color: #fff;
-    margin-bottom: 10px;
-    transition: border-color 0.3s ease;
-}
-
-/* Estilo para cuando el campo tiene foco */
-.form-group input:focus {
-    border-color: #FF5722; /* Resalta con un borde anaranjado al hacer foco */
-    background-color: #444;
-}
-
-/* Estilo para los errores del formulario */
-.error-list {
-    list-style-type: none;
-    padding-left: 0;
-    margin-top: 5px;
-    color: red;
-    font-size: 14px;
-}
-
-/* Botón de envío */
-button[type="submit"] {
-    width: 100%;
-    padding: 14px;
-    font-size: 18px;
-    background-color: #FF5722; /* Naranja vibrante */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-/* Efecto de hover en el botón */
-button[type="submit"]:hover {
-    background-color: #E64A19; /* Oscurece el botón cuando se pasa el ratón */
-}
-
-/* Enlace para registro */
-.register-container p {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-}
-
-.register-container p a {
-    color: #FFEB3B; /* Amarillo vibrante para los enlaces */
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.register-container p a:hover {
-    text-decoration: underline;
-    color: #FF5722; /* Cambia el color al pasar el ratón */
-}
-
-/* Animación para el contenedor */
-@keyframes slideIn {
-    from {
-        transform: translate(-50%, -60%);
-        opacity: 0;
-    }
-    to {
-        transform: translate(-50%, -50%);
-        opacity: 1;
-    }
+body {
+    background-color: #0d0d0d;
+    color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 header {
-    background-color: #1e1e1e; /* Fondo oscuro */
-    padding: 20px 0; /* Espaciado en la parte superior e inferior */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra sutil para el encabezado */
-    position: fixed; /* Fijar el encabezado en la parte superior */
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    z-index: 1000;
+    background-color: #1a1a1a;
+    padding: 1rem 2rem;
+    text-align: left;
+    border-bottom: 1px solid #333;
 }
 
-/* Logo en el encabezado */
-header .logo {
-    color: #FFEB3B; /* Amarillo brillante para el logo */
-    font-size: 30px;
-    font-family: 'Press Start 2P', cursive; /* Fuente estilo pixel art */
+.logo {
+    color: #c084fc;
+    font-size: 1.5rem;
     text-decoration: none;
-    display: block;
-    text-align: center; /* Centrado del logo */
+    font-weight: bold;
 }
 
-/* Efecto cuando el logo es hovered */
-header .logo:hover {
-    color: #FF5722; /* Cambia a naranja brillante al pasar el ratón */
-    text-decoration: underline; /* Subraya el logo al pasar el ratón */
+.register-container {
+    max-width: 400px;
+    margin: 4rem auto;
+    background-color: #1a1a1a;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
 }
 
-/* Ajuste para el espaciado si hay contenido debajo del encabezado fijo */
-body {
-    margin-top: 80px; /* Ajustar el espacio superior para que no se tape el contenido con el encabezado fijo */
+h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #c084fc;
 }
 
-/* Responsividad para dispositivos más pequeños */
-@media (max-width: 768px) {
-    header {
-        padding: 15px 0;
-    }
+.form-label {
+    color: #e0e0e0;
+}
 
-    header .logo {
-        font-size: 24px; /* Reducir el tamaño del logo en pantallas pequeñas */
-    }
+.form-control {
+    background-color: #262626;
+    color: #f8f9fa;
+    border: 1px solid #444;
+}
+
+.form-control:focus {
+    background-color: #262626;
+    color: #fff;
+    border-color: #c084fc;
+    box-shadow: 0 0 0 0.2rem rgba(192, 132, 252, 0.2);
+}
+
+input[type="submit"] {
+    background-color: #c084fc;
+    border: none;
+    color: #0d0d0d;
+    padding: 0.6rem 1rem;
+    width: 100%;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #a855f7;
+}
+
+a {
+    color: #c084fc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
