@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 import requests
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
@@ -12,7 +13,7 @@ from web.models import Videojuego, Genero
 
 
 def home(request):
-    API_KEY = 'pub_78670010e7e9dc763d072171bfec442ce08dc'  # 🔐 Reemplázala con tu key
+    API_KEY = 'pub_78670010e7e9dc763d072171bfec442ce08dc'
     URL = 'https://newsdata.io/api/1/news'
 
     noticias = []
@@ -24,8 +25,8 @@ def home(request):
             'category': 'technology',
         }
         response = requests.get(URL, params=params)
-        response.raise_for_status()  # Lanza una excepción si el código de estado no es 200
-        resultados = response.json().get('results', [])  # Solo mostramos 8 noticias
+        response.raise_for_status()
+        resultados = response.json().get('results', [])
 
         # Usamos un conjunto para almacenar títulos únicos
         titulos_vistos = set()
@@ -34,7 +35,6 @@ def home(request):
         for noticia in resultados:
             titulo = noticia['title']
 
-            # Si el título no se ha visto antes, lo añadimos a la lista de noticias únicas
             if titulo not in titulos_vistos:
                 titulos_vistos.add(titulo)
                 noticias_unicas.append(noticia)
@@ -112,3 +112,11 @@ class register_view(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
     template_name = "register.html"
+
+@login_required
+def pagina_perfil(request):
+    """
+    Vista para mostrar la página de perfil del usuario autenticado.
+    Requiere que el usuario esté logueado.
+    """
+    return render(request, 'perfil.html')
