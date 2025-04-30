@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.utils.text import slugify
 from django.views.generic import CreateView
 
-from web.forms import CustomUserCreationForm
+from web.forms import CustomUserCreationForm, CustomUserChangeForm
 from web.models import Videojuego, Genero
 
 
@@ -115,8 +115,12 @@ class register_view(CreateView):
 
 @login_required
 def pagina_perfil(request):
-    """
-    Vista para mostrar la página de perfil del usuario autenticado.
-    Requiere que el usuario esté logueado.
-    """
-    return render(request, 'perfil.html')
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('pagina_perfil')  # Redirige a la misma vista o a otra
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+
+    return render(request, 'perfil.html', {'form': form})

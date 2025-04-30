@@ -9,7 +9,6 @@ body {
 header {
     background-color: #1a1a1a;
     padding: 1rem 2rem;
-    text-align: left;
     border-bottom: 1px solid #333;
 }
 
@@ -20,8 +19,8 @@ header {
     font-weight: bold;
 }
 
-.register-container {
-    max-width: 400px;
+.form-container {
+    max-width: 600px;
     margin: 4rem auto;
     background-color: #1a1a1a;
     padding: 2rem;
@@ -52,11 +51,12 @@ h2 {
     box-shadow: 0 0 0 0.2rem rgba(192, 132, 252, 0.2);
 }
 
+button,
 input[type="submit"] {
     background-color: #c084fc;
     border: none;
     color: #0d0d0d;
-    padding: 0.6rem 1rem;
+    padding: 0.6rem 1.2rem;
     width: 100%;
     border-radius: 8px;
     font-weight: bold;
@@ -64,6 +64,7 @@ input[type="submit"] {
     transition: background-color 0.3s ease;
 }
 
+button:hover,
 input[type="submit"]:hover {
     background-color: #a855f7;
 }

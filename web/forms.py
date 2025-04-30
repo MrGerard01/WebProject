@@ -36,7 +36,10 @@ class CustomUserCreationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
 class CustomUserChangeForm(UserChangeForm):
+    password = None  # Elimina el campo password
     class Meta:
         model = CustomUser
-        fields = UserChangeForm.Meta.fields
+        fields = ['username', 'first_name', 'last_name', 'email']
+        help_texts = {'username': '', 'first_name': '',  'last_name': '', 'email': ''}
