@@ -18,9 +18,8 @@
         </form>
     </div>
     <hr>
-    <div style="display: flex; justify-content: space-around;">
-        <div>
-            <h2>Filtrar por Género</h2>
+    <div class="row">
+        <div class="col-sm-12 col-md-3">
             <div class="sidebar">
                 <div class="gen_button">
                     <a href="{% url 'game_list' %}?q={{ request.GET.q }}"><button {% if not genero_actual %}disabled{% endif %}>Todos</button></a>
@@ -32,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="col-sm-12 col-md-9">
             <h2 style="text-align: center">Juegos Disponibles</h2>
         
             <div class="game-container">
@@ -42,17 +41,21 @@
                     <p>No hay juegos disponibles.</p>
                 {% endfor %}
             </div>
-            <div class="pagination">
-                {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}?q={{ request.GET.q }}">Anterior</a>
-                {% endif %}
-            
-                <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-            
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}?q={{ request.GET.q }}">Siguiente</a>
-                {% endif %}
-            </div>
         </div>
+    </div>
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <button onclick="window.location.href='?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}'">Anterior</button>
+        {% else %}
+            <button disabled>Anterior</button>
+        {% endif %}
+    
+        <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+    
+        {% if page_obj.has_next %}
+            <button onclick="window.location.href='?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}'">Siguiente</button>
+        {% else %}
+            <button disabled>Siguiente</button>
+        {% endif %}
     </div>
 {% endblock %}
