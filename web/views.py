@@ -78,7 +78,7 @@ def game_list(request, category=None):
     generos = Genero.objects.all().order_by('nombre')
 
     if query:
-        videojuegos = Videojuego.objects.filter(titulo__icontains=query)
+        videojuegos = Videojuego.objects.filter(titulo__startswith=query)
 
     videojuegos, category = filtrar_genero(videojuegos, category, generos)
 
@@ -115,12 +115,13 @@ class register_view(CreateView):
 
 @login_required
 def pagina_perfil(request):
+    user = request.user
     if request.method == 'POST':
-        form = CustomUserChangeForm(request.POST, instance=request.user)
+        form = CustomUserChangeForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('pagina_perfil')  # Redirige a la misma vista o a otra
+            return redirect('pagina_perfil')
     else:
-        form = CustomUserChangeForm(instance=request.user)
+        form = CustomUserChangeForm(instance=user)
 
     return render(request, 'perfil.html', {'form': form})

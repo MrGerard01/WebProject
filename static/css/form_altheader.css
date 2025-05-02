@@ -6,19 +6,6 @@ body {
     padding: 0;
 }
 
-header {
-    background-color: #1a1a1a;
-    padding: 1rem 2rem;
-    border-bottom: 1px solid #333;
-}
-
-.logo {
-    color: #c084fc;
-    font-size: 1.5rem;
-    text-decoration: none;
-    font-weight: bold;
-}
-
 .form-container {
     max-width: 600px;
     margin: 4rem auto;
@@ -27,6 +14,11 @@ header {
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
 }
+
+.form-container p {
+    color: white;
+}
+
 
 h2 {
     text-align: center;
