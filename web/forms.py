@@ -39,13 +39,15 @@ class CustomUserCreationForm(forms.ModelForm):
             user.save()
         return user
 
+
+
 class CustomUserChangeForm(UserChangeForm):
     password = None  # Elimina el campo password
 
     class Meta:
         model = CustomUser
         fields = ['username', 'first_name', 'last_name', 'email', 'avatar']
-        help_texts = {'username': '', 'first_name': '', 'last_name': '', 'email': '', 'avatar': ''}
+        help_texts = {field: '' for field in fields}
 
     def clean_avatar(self):
         avatar = self.cleaned_data.get('avatar')

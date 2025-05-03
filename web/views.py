@@ -1,4 +1,3 @@
-from django.contrib.auth import authenticate, login, logout
 import requests
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -9,7 +8,7 @@ from django.utils.text import slugify
 from django.views.generic import CreateView
 
 from web.forms import CustomUserCreationForm, CustomUserChangeForm
-from web.models import Videojuego, Genero
+from web.models import Videojuego, Genero, CustomUser
 
 
 def home(request):
@@ -86,7 +85,7 @@ def game_list(request, category=None):
     page_number = request.GET.get('page')
     page_obj = game_pagination.get_page(page_number)
 
-    return render(request, 'Game_list.html', {
+    return render(request, 'game_list.html', {
         'page_obj': page_obj,
         "generos": generos,
         'query': query,
@@ -116,6 +115,7 @@ class register_view(CreateView):
 @login_required
 def pagina_perfil(request):
     user = request.user
+    juegos_favoritos = user.juegos_guardados.all()
     if request.method == 'POST':
         form = CustomUserChangeForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -124,4 +124,4 @@ def pagina_perfil(request):
     else:
         form = CustomUserChangeForm(instance=user)
 
-    return render(request, 'perfil.html', {'form': form})
+    return render(request, 'perfil.html', {'form': form, 'juegos': juegos_favoritos})
