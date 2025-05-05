@@ -8,21 +8,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesión</title>
-    <link rel="stylesheet" href="{% static 'css/form_altheader.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/form_altheader.css' %}">
 </head>
 <body>
     <header>
         <a href="{% url 'home' %}" class="logo">MyGameList</a>
     </header>
+    
     <div class="form-container">
-        <h2>Iniciar sesión</h2>
+        <h2>Editar Perfil</h2>
         <form method="POST">
             {% csrf_token %}
             {% bootstrap_form form %}
-            <input type="submit" value="Login">
+            <input type="submit" value="Guardar cambios">
         </form>
-        <p>¿Nuevo en la página? <a href="{% url 'register' %}">Registrate aquí</a></p>
     </div>
 </body>
 </html>
+

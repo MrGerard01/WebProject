@@ -90,3 +90,25 @@ strong {
     vertical-align: middle;
     line-height: 1;
 }
+/* Estilos generales para la imagen de perfil */
+.profile-pic {
+    width: 40px; /* Define el ancho de la imagen */
+    height: 40px; /* Define la altura de la imagen */
+    border-radius: 50%; /* Hace que la imagen sea circular */
+    object-fit: cover; /* Asegura que la imagen cubra el contenedor sin deformarse */
+    margin-right: 10px; /* Espacio entre la imagen y el siguiente elemento (ej. el enlace "Mi Perfil") */
+    vertical-align: middle; /* Alinea verticalmente la imagen con el texto adyacente */
+}
+
+/* Opcional: Estilos al pasar el ratón por encima */
+.profile-pic:hover {
+    opacity: 0.8; /* Reduce ligeramente la opacidad al pasar el ratón */
+    cursor: pointer; /* Cambia el cursor a un puntero si la imagen es un enlace */
+}
+
+/* Si la imagen está dentro de un enlace */
+.profile-link {
+    display: inline-flex; /* Permite alinear la imagen verticalmente dentro del enlace */
+    align-items: center; /* Centra verticalmente la imagen dentro del enlace */
+    margin-right: 10px; /* Espacio entre el enlace de la imagen y el siguiente elemento */
+}

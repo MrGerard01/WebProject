@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 import requests
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
@@ -7,12 +8,12 @@ from django.urls import reverse_lazy
 from django.utils.text import slugify
 from django.views.generic import CreateView
 
-from web.forms import CustomUserCreationForm
+from web.forms import CustomUserCreationForm, CustomUserChangeForm
 from web.models import Videojuego, Genero
 
 
 def home(request):
-    API_KEY = 'pub_78670010e7e9dc763d072171bfec442ce08dc'  # 🔐 Reemplázala con tu key
+    API_KEY = 'pub_78670010e7e9dc763d072171bfec442ce08dc'
     URL = 'https://newsdata.io/api/1/news'
 
     noticias = []
@@ -24,8 +25,8 @@ def home(request):
             'category': 'technology',
         }
         response = requests.get(URL, params=params)
-        response.raise_for_status()  # Lanza una excepción si el código de estado no es 200
-        resultados = response.json().get('results', [])  # Solo mostramos 8 noticias
+        response.raise_for_status()
+        resultados = response.json().get('results', [])
 
         # Usamos un conjunto para almacenar títulos únicos
         titulos_vistos = set()
@@ -34,7 +35,6 @@ def home(request):
         for noticia in resultados:
             titulo = noticia['title']
 
-            # Si el título no se ha visto antes, lo añadimos a la lista de noticias únicas
             if titulo not in titulos_vistos:
                 titulos_vistos.add(titulo)
                 noticias_unicas.append(noticia)
@@ -112,3 +112,15 @@ class register_view(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
     template_name = "register.html"
+
+@login_required
+def pagina_perfil(request):
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('pagina_perfil')  # Redirige a la misma vista o a otra
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+
+    return render(request, 'perfil.html', {'form': form})

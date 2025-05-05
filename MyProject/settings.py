@@ -138,3 +138,5 @@ AUTH_USER_MODEL = 'web.CustomUser'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+LOGIN_URL = 'login'
