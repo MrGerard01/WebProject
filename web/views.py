@@ -1,4 +1,3 @@
-from django.contrib.auth import authenticate, login, logout
 import requests
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -9,7 +8,7 @@ from django.utils.text import slugify
 from django.views.generic import CreateView
 
 from web.forms import CustomUserCreationForm, CustomUserChangeForm
-from web.models import Videojuego, Genero
+from web.models import Videojuego, Genero, CustomUser
 
 
 def home(request):
@@ -78,7 +77,7 @@ def game_list(request, category=None):
     generos = Genero.objects.all().order_by('nombre')
 
     if query:
-        videojuegos = Videojuego.objects.filter(titulo__icontains=query)
+        videojuegos = Videojuego.objects.filter(titulo__startswith=query)
 
     videojuegos, category = filtrar_genero(videojuegos, category, generos)
 
@@ -86,7 +85,7 @@ def game_list(request, category=None):
     page_number = request.GET.get('page')
     page_obj = game_pagination.get_page(page_number)
 
-    return render(request, 'Game_list.html', {
+    return render(request, 'game_list.html', {
         'page_obj': page_obj,
         "generos": generos,
         'query': query,
@@ -115,12 +114,14 @@ class register_view(CreateView):
 
 @login_required
 def pagina_perfil(request):
+    user = request.user
+    juegos_favoritos = user.juegos_guardados.all()
     if request.method == 'POST':
-        form = CustomUserChangeForm(request.POST, instance=request.user)
+        form = CustomUserChangeForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('pagina_perfil')  # Redirige a la misma vista o a otra
+            return redirect('pagina_perfil')
     else:
-        form = CustomUserChangeForm(instance=request.user)
+        form = CustomUserChangeForm(instance=user)
 
-    return render(request, 'perfil.html', {'form': form})
+    return render(request, 'perfil.html', {'form': form, 'juegos': juegos_favoritos})

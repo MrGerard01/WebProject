@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.core.exceptions import ValidationError
+
 from .models import CustomUser
 
 class CustomUserCreationForm(forms.ModelForm):
@@ -37,9 +39,22 @@ class CustomUserCreationForm(forms.ModelForm):
             user.save()
         return user
 
+
+
 class CustomUserChangeForm(UserChangeForm):
     password = None  # Elimina el campo password
+
     class Meta:
         model = CustomUser
-        fields = ['username', 'first_name', 'last_name', 'email']
-        help_texts = {'username': '', 'first_name': '',  'last_name': '', 'email': ''}
+        fields = ['username', 'first_name', 'last_name', 'email', 'avatar']
+        help_texts = {field: '' for field in fields}
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get('avatar')
+
+        if avatar:
+            ext = avatar.name.split('.')[-1].lower()
+            if ext not in ['jpg', 'jpeg', 'png']:
+                raise ValidationError('Solo se permiten archivos JPG o PNG.')
+
+        return avatar

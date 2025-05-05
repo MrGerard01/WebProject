@@ -11,25 +11,8 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
 </head>
-<body class="container py-3d">
-    <header>
-        <a href="{% url 'home' %}" class="logo">MyGameList</a>
-        <div>
-            {% if user.is_authenticated %}
-                <p>{{ user.username }}</p>
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="button">Cerrar sesión</button>
-                </form>
-            {% else %}
-                <a href="{% url 'login' %}" class="button">Iniciar sesión</a>
-                <a href="{% url 'register' %}" class="button">Registrarse</a>
-            {% endif %}
-            <div class="search-bar">
-                <input type="text" placeholder="Buscar  juegos...">
-            </div>
-        </div>
-    </header>
+<body class="container pb-3">
+    {% include 'partials/navbar.html' %}
     <div class="content-container game-details-card">
         <div class="back-button">
             <a href="{% url 'game_list'%}">

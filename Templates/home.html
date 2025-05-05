@@ -14,10 +14,10 @@
 {% block content %}
     <h2 class="p-5 border border-1 shadow rounded">Bienvenido a MyGameList</h2>
     <hr>
-    <div class="search-bar">
-        <form action="{% url 'game_list' %}" method="get" class="search-bar">
-            <input type="text" name="q" placeholder="Buscar juegos... " value="{{ request.GET.busqueda }}">
-            <button type="submit">Buscar</button>
+    <div class="container my-4">
+        <form action="{% url 'game_list' %}" method="get" class="input-group">
+            <input type="text" class="form-control" name="q" placeholder="Buscar juegos..." value="{{ request.GET.q }}">
+            <button type="submit" class="btn btn-primary">Buscar</button>
         </form>
     </div>
     <h3>Juegos mejor valorados</h3>

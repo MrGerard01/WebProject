@@ -31,7 +31,7 @@ class Review(models.Model):
         return self.titulo
 
 class CustomUser(AbstractUser):
-    avatar = models.ImageField('Avatar', null=True, blank=True, upload_to='avatars/')
+    avatar = models.ImageField(null=True, blank=True, upload_to='avatars/')
     juegos_guardados = models.ManyToManyField('Videojuego', blank=True)
     def __str__(self):
         return self.username

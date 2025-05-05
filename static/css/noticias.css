@@ -13,7 +13,7 @@
 
 /* Tarjeta individual */
 .noticia {
-    background-color: #ffffff;
+    background-color: #f5eafb;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     display: flex;
@@ -45,7 +45,7 @@
 /* Título */
 .noticia h3 {
     font-size: 1.1em;
-    color: #6a0dad;
+    color: #6e00d1;
     margin-bottom: 5px;
 }
 

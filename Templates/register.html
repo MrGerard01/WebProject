@@ -8,13 +8,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
-    <link rel="stylesheet" href="{% static 'css/form_altheader.css' %}">
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-<body>
-    <header>
-        <a href="{% url 'home' %}" class="logo">MyGameList</a>
-    </header>
+<body class="container pb-3">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top px-4">
+        <div class="container-fluid" >
+            <a class="navbar-brand fw-bold" href="{% url 'home' %}">MyGameList</a>
+        </div>
+    </nav>
     <div class="form-container">
         <h2>Regístrate</h2>
         <form method="POST">
