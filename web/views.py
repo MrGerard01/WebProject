@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 from django.views.generic import CreateView
 
@@ -61,12 +61,12 @@ def game(request, pk):
         if genero else []
     )
 
-    referer = request.META.get('HTTP_REFERER')
+    next_url = request.GET.get("next", None)
 
     return render(request, "game.html", {
         "juego": juego,
         "similares": similares,
-        "referer": referer,
+        "next": next_url,
     })
 def game_list(request):
     q = request.GET.get('q')  # Búsqueda por título
@@ -103,11 +103,35 @@ def guardar_juego(request, pk):
         juego = get_object_or_404(Videojuego, pk=pk)
         usuario = request.user
 
-        if juego not in usuario.juegos_guardados.all():
-            usuario.juegos_guardados.add(juego)
+        usuario.juegos_guardados.add(juego)
 
+        next_url = request.POST.get("next", None)  # Si no se pasa next, se queda como None
 
-        return redirect('game', pk=juego.pk)
+        # Aquí no rediriges, simplemente renderizas de nuevo la página 'game'
+        if next_url:
+            # Se incluye el next en la URL de la respuesta
+            return redirect(f"{reverse('game', args=[pk])}?next={next_url}")
+        else:
+            return redirect(reverse('game', args=[pk]))
+    else:
+        return redirect('home')
+
+@login_required
+def quitar_juego(request, pk):
+    if request.method == "POST":
+        juego = get_object_or_404(Videojuego, pk=pk)
+        usuario = request.user
+
+        usuario.juegos_guardados.remove(juego)
+
+        next_url = request.POST.get("next", None)  # Si no se pasa next, se queda como None
+
+        # Aquí no rediriges, simplemente renderizas de nuevo la página 'game'
+        if next_url:
+            # Se incluye el next en la URL de la respuesta
+            return redirect(f"{reverse('game', args=[pk])}?next={next_url}")
+        else:
+            return redirect(reverse('game', args=[pk]))
     else:
         return redirect('home')
 class register_view(CreateView):

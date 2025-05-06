@@ -15,8 +15,8 @@
     {% include 'partials/navbar.html' %}
     <div class="content-container game-details-card">
         <div class="back-button">
-            {% if referer %}
-                <a href="{{ referer }}">
+            {% if next %}
+                <a href="{{ next }}">
                     <h3>&longleftarrow; Volver</h3>
                 </a>
             {% else %}
@@ -28,18 +28,19 @@
         <div class="p-5 border border-1 shadow rounded">
             <div>
                 <h1>{{ juego.titulo }}</h1>
-                <form method="POST" action="{% url 'guardar_juego' juego.pk %}">
-                  {% csrf_token %}
-                      {% if user.is_authenticated %}
-                          {% if juego in user.juegos_guardados.all %}
-                              <button type="submit" disabled>Ya guardado</button>
-                          {% else %}
-                              <button type="submit">Guardar juego</button>
-                          {% endif %}
-                      {% else %}
-                          <a href="{% url 'login' %}">Inicia sesión para guardar</a>
-                      {% endif %}
-                </form>
+                {% if not user.is_authenticated or not juego in user.juegos_guardados.all %}
+                    <form method="POST" action="{% url 'guardar_juego' juego.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        <button type="submit">☆</button>
+                    </form>
+                {% else %}
+                    <form method="POST" action="{% url 'quitar_juego' juego.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        <button type="submit">★</button>
+                    </form>
+                {% endif %}
             </div>
             <div class="row" style="margin-top: 20px;">
                 <div class="col-sm-12 col-md-5">
