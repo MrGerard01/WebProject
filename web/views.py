@@ -70,42 +70,37 @@ def game(request, pk):
         "similares": similares,
     })
 
-def game_list(request, category=None):
-    query = request.GET.get('q')  # Obtiene lo que el usuario escribió
+
+
+def game_list(request):
+    q = request.GET.get('q')  # Búsqueda por título
+    page_number = request.GET.get('page')  # Página actual
+    category = request.GET.get('category')
 
     videojuegos = Videojuego.objects.all().order_by('titulo')
-    generos = Genero.objects.all().order_by('nombre')
 
-    if query:
-        videojuegos = Videojuego.objects.filter(titulo__startswith=query)
-
-    videojuegos, category = filtrar_genero(videojuegos, category, generos)
-
-    game_pagination = Paginator(videojuegos, 20)
-    page_number = request.GET.get('page')
-    page_obj = game_pagination.get_page(page_number)
-
-    return render(request, 'game_list.html', {
-        'page_obj': page_obj,
-        "generos": generos,
-        'query': query,
-        "genero_actual": category,
-    })
-
-def filtrar_genero(videojuegos, category, generos):
+    if q:
+        videojuegos = videojuegos.filter(titulo__startswith=q)
     if category:
-        try:
-            # Buscar en la base de datos el género con el slug coincidente
-            genero = next((g for g in generos if slugify(g.nombre) == category), None)
-            if genero:
-                videojuegos = videojuegos.filter(genero=genero)
-                category = genero.nombre  # Restaurar el nombre original del género
-            else:
-                videojuegos = Videojuego.objects.none()
-        except Exception as e:
-            print(f"Error al buscar género: {e}")
-            videojuegos = Videojuego.objects.none()
-    return videojuegos, category
+        videojuegos = videojuegos.filter(genero__nombre__icontains=category)
+
+    paginator = Paginator(videojuegos, 20)
+    page_obj = paginator.get_page(page_number)
+
+    filtros_get = request.GET.copy()
+    if 'page' in filtros_get:
+        filtros_get.pop('page')
+
+    context = {
+        'page_obj': page_obj,
+        'generos': Genero.objects.all(),
+        'genero_actual': category,
+        'filtros_get': f"category={category}&q={q}" if category or q else "",
+    }
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return render(request, 'partials/partial_list.html', context)
+    return render(request, 'game_list.html', context)
 
 class register_view(CreateView):
     form_class = CustomUserCreationForm

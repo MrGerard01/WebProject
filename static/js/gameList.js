@@ -6,10 +6,8 @@ $(document).ready(function () {
 
     var currentUrl = new URL(window.location);
     currentUrl.searchParams.set('category', genero);
-    if (busqueda) currentUrl.searchParams.set('q', busqueda);
-    else currentUrl.searchParams.delete('q');
+    window.history.pushState({ path: currentUrl.href }, '', currentUrl.href);
 
-    window.history.pushState({}, '', currentUrl.href);
 
     $.ajax({
       url: '/games/',
@@ -19,7 +17,6 @@ $(document).ready(function () {
         q: busqueda
       },
       success: function (respuesta) {
-        // 🔁 Asegúrate de que el ID aquí sea igual al que contiene tanto los juegos como la paginación
         $('#contenedor-juegos').html(respuesta);
       },
       error: function () {
