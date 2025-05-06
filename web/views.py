@@ -72,7 +72,7 @@ def game(request, pk):
 
 def game_list(request, category=None):
     query = request.GET.get('q')  # Obtiene lo que el usuario escribió
-    print(query)
+
     videojuegos = Videojuego.objects.all().order_by('titulo')
     generos = Genero.objects.all().order_by('nombre')
 
