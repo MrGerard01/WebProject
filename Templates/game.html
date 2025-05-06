@@ -15,13 +15,31 @@
     {% include 'partials/navbar.html' %}
     <div class="content-container game-details-card">
         <div class="back-button">
-            <a href="{% url 'game_list'%}">
-                <h3>&longleftarrow;Volver</h3>
-            </a>
+            {% if referer %}
+                <a href="{{ referer }}">
+                    <h3>&longleftarrow; Volver</h3>
+                </a>
+            {% else %}
+                <a href="{% url 'game_list' %}">
+                    <h3>&longleftarrow; Volver</h3>
+                </a>
+            {% endif %}
         </div>
         <div class="p-5 border border-1 shadow rounded">
             <div>
                 <h1>{{ juego.titulo }}</h1>
+                <form method="POST" action="{% url 'guardar_juego' juego.pk %}">
+                  {% csrf_token %}
+                      {% if user.is_authenticated %}
+                          {% if juego in user.juegos_guardados.all %}
+                              <button type="submit" disabled>Ya guardado</button>
+                          {% else %}
+                              <button type="submit">Guardar juego</button>
+                          {% endif %}
+                      {% else %}
+                          <a href="{% url 'login' %}">Inicia sesión para guardar</a>
+                      {% endif %}
+                </form>
             </div>
             <div class="row" style="margin-top: 20px;">
                 <div class="col-sm-12 col-md-5">

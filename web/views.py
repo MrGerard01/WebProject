@@ -52,26 +52,22 @@ def home(request):
         'noticias': noticias,
         'videojuegos': videojuegos,
     })
-
 def game(request, pk):
     juego = get_object_or_404(Videojuego, pk=pk)
-
     genero = juego.genero.first()
-    print(genero)
+
     similares = (
         Videojuego.objects.filter(genero__nombre__icontains=genero).exclude(pk=juego.pk)[:6]
         if genero else []
     )
 
-    print(similares)
+    referer = request.META.get('HTTP_REFERER')
 
     return render(request, "game.html", {
         "juego": juego,
         "similares": similares,
+        "referer": referer,
     })
-
-
-
 def game_list(request):
     q = request.GET.get('q')  # Búsqueda por título
     page_number = request.GET.get('page')  # Página actual
@@ -101,12 +97,23 @@ def game_list(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         return render(request, 'partials/partial_list.html', context)
     return render(request, 'game_list.html', context)
+@login_required
+def guardar_juego(request, pk):
+    if request.method == "POST":
+        juego = get_object_or_404(Videojuego, pk=pk)
+        usuario = request.user
 
+        if juego not in usuario.juegos_guardados.all():
+            usuario.juegos_guardados.add(juego)
+
+
+        return redirect('game', pk=juego.pk)
+    else:
+        return redirect('home')
 class register_view(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
     template_name = "register.html"
-
 @login_required
 def pagina_perfil(request):
     user = request.user
