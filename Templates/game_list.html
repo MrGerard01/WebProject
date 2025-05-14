@@ -1,0 +1,28 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block title %} MyGameList {% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/genres.css' %}">
+    <link rel="stylesheet" href="{% static 'css/pagination.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container my-4">
+      <form action="{% url 'game_list' %}" method="get" class="input-group">
+        <input type="text" class="form-control" name="q" placeholder="Buscar juegos..." value="{{ request.GET.q }}">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </form>
+    </div>
+    <hr>
+    <div id="contenedor-juegos">
+        {% include 'partials/partial_list.html' %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/gameList.js' %}"></script>
+{% endblock %}

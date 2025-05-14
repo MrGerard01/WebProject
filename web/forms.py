@@ -1,36 +1,60 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
-from web.models import Review
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.core.exceptions import ValidationError
 
+from .models import CustomUser
 
-class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(label='Email', max_length=254, required=True)
+class CustomUserCreationForm(forms.ModelForm):
+    username = forms.CharField(
+        label='Nombre de usuario',
+        max_length=150,
+        help_text=''
+    )
+    password = forms.CharField(
+        label='Contraseña',
+        widget=forms.PasswordInput,
+        help_text=''
+    )
+    password2 = forms.CharField(
+        label='Confirmar contraseña',
+        widget=forms.PasswordInput,
+        help_text=''
+    )
 
     class Meta:
-        model = User  # Usa el modelo User para la autenticación
-        fields = ['username', 'email', 'password1', 'password2']  # No incluyas '<PASSWORD>'
-        labels = {
-            'username': 'Nombre de Usuario',
-            'email': 'Email de Usuario',
-            'password1': 'Contraseña',
-            'password2': 'Confirmación de Contraseña',
-        }
+        model = CustomUser
+        fields = ('username', 'password', 'password2')
 
-class AuthenticationForm(forms.Form):
-    username = forms.CharField(label='Nombre de Usuario', max_length=150)
-    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
-
-    def clean(self):
-        username = self.cleaned_data.get('username')
+    def clean_password2(self):
         password = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('password2')
+        if password is not None and password != password2:
+            raise forms.ValidationError("Las contraseñas no coinciden")
+        return password2
 
-        if not authenticate(username=username, password=password):
-            raise forms.ValidationError('Usuario o contraseña incorrectos')
-        return self.cleaned_data
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        if commit:
+            user.save()
+        return user
 
-class ReviewForm(forms.ModelForm):
+
+
+class CustomUserChangeForm(UserChangeForm):
+    password = None  # Elimina el campo password
+
     class Meta:
-        model = Review
-        fields = ['titulo', 'rating', 'descripcion']
+        model = CustomUser
+        fields = ['username', 'first_name', 'last_name', 'email', 'avatar']
+        help_texts = {field: '' for field in fields}
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get('avatar')
+
+        if avatar:
+            ext = avatar.name.split('.')[-1].lower()
+            if ext not in ['jpg', 'jpeg', 'png']:
+                raise ValidationError('Solo se permiten archivos JPG o PNG.')
+
+        return avatar

@@ -1,19 +1,24 @@
 .pagination {
-    text-align: center;
+    justify-content: center;
     margin-top: 20px;
 }
 
-.pagination a {
+.pagination button {
     padding: 10px 15px;
     margin: 5px;
-    background-color: #6c5ce7;
-    color: white;
+    border: none;
+    background-color: rgb(190 144 253);
+    color: rgb(78 31 137);
     text-decoration: none;
     border-radius: 5px;
 }
 
-.pagination a:hover {
-    background-color: #4834d4;
+.pagination button:hover {
+    filter: brightness(1.15);
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
 }
 
 .pagination span {

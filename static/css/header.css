@@ -3,8 +3,6 @@ header {
     background-color: #333;
     color: white;
     padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
@@ -22,7 +20,6 @@ header {
     padding-right: 20px ;
 }
 
-/* Contenedor de los botones y la barra de búsqueda */
 header > div {
     display: flex;
     gap: 20px;
@@ -55,22 +52,4 @@ header > div {
     font-size: 16px;
     outline: none;
     width: 200px;
-}
-
-/* Responsividad */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 15px 20px;
-    }
-
-    header > div {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .search-bar input {
-        width: 100%;
-    }
 }

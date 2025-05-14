@@ -8,35 +8,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} {% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     {% block styles %}{% endblock %}
 </head>
-{% block scripts %}{% endblock %}
-<body class="container py-3d">
-    <header>
-        <a href="{% url 'home' %}" class="logo">MyGameList</a>
-        <div>
-            {% if user.is_authenticated %}
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="button">Cerrar sesión</button>
-                </form>
-            {% else %}
-                <a href="{% url 'login' %}" class="button">Iniciar sesión</a>
-                <a href="{% url 'register' %}" class="button">Registrarse</a>
-            {% endif %}
-
-            <div class="search-bar">
-                <form action="{% url 'game_list' %}" method="get" class="search-bar">
-                    <input type="text" name="q" placeholder="Buscar juegos... " value="{{ request.GET.busqueda }}">
-                    <button type="submit">Buscar</button>
-                </form>
-            </div>
-        </div>
-    </header>
+<body class="container pb-3">
+    {% include 'partials/navbar.html' %}
     <div class="content-container">
         {% block content %} {% endblock %}
     </div>
     {% bootstrap_javascript %}
+    {% block scripts %}{% endblock %}
 </body>
 </html>
