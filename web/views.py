@@ -70,7 +70,7 @@ def game(request, pk):
             if form.is_valid():
                 resenya = form.save(commit=False)
                 # resenya.videojuego = juego
-                resenya.usuario = Usuario.objects.get(usuario=request.user)  # provar si va amb request.user
+                resenya.usuario = CustomUser.objects.get(usuario=request.user)  # provar si va amb request.user
                 resenya.videojuego = juego
                 resenya.titulo = form.cleaned_data['titulo']
                 resenya.rating = form.cleaned_data['rating']
