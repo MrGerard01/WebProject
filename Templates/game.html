@@ -10,6 +10,7 @@
     <title>{{ juego.titulo }}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reviews.css' %}">
 </head>
 <body class="container pb-3">
     {% include 'partials/navbar.html' %}
@@ -61,40 +62,35 @@
                 </div>
             </div>
         </div>
-    <div class="reviews">
-            <h4>Reseñas:</h4>
-            {% if reviews %}
-                <ul>
-                {% for review in reviews %}
-                    <li>
-                        <strong>{{ review.usuario }} </strong>
-                        - Valoración: {{ review.rating }}
-                        <br>
-                        <strong>{{review.titulo}}</strong>
-                        <br>
-                        {{ review.texto }}
-                        <br>
-                        <small><i>Publicada el {{ resenya.fecha_review }}</i></small>
-                    </li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-            {%  if form %}
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit">Enviar reseña</button>
-                </form>
-            {% else %}
-                <p><a href="{% url 'login' %}">Iniciar Sesión</a> para dejar una reseña</p>
-            {% endif %}
-        </div>
         <hr>
         <div>
             <h3>Juegos similares</h3>
             {% for juego in similares %}
                 {% include 'partials/game_card.html' %}
             {% endfor %}
+        </div>
+        <hr>
+        <div class="reviews">
+            <h3>Reseñas:</h3>
+            <div class="row justify-content-center">
+                <div class="col-7 align-self-center">
+                    {%  if user.is_authenticated %}
+                        <form method="post">
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            <input type="hidden" name="next" value="{{ next }}">
+                            <button type="submit">Enviar reseña</button>
+                        </form>
+                    {% else %}
+                        <p><a href="{% url 'login' %}">Iniciar Sesión</a> para dejar una reseña</p>
+                    {% endif %}
+                </div>
+                <div class="col-10 align-self-center">
+                    {% if reviews %}
+                        {% include 'partials/reviews_list.html' %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </body>

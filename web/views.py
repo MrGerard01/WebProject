@@ -61,32 +61,31 @@ def game(request, pk):
         Videojuego.objects.filter(genero__nombre__icontains=genero).exclude(pk=juego.pk)[:6]
         if genero else []
     )
-
     next_url = request.GET.get("next", None)
-    form = None
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            form = ReviewForm(request.POST)
-            if form.is_valid():
-                resenya = form.save(commit=False)
-                # resenya.videojuego = juego
-                resenya.usuario = CustomUser.objects.get(usuario=request.user)  # provar si va amb request.user
-                resenya.videojuego = juego
-                resenya.titulo = form.cleaned_data['titulo']
-                resenya.rating = form.cleaned_data['rating']
-                resenya.texto = form.cleaned_data['texto']
-                resenya.save()
-                return redirect('game', pk=pk)
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            resenya = form.save(commit=False)
+            resenya.usuario = request.user
+            resenya.videojuego = juego
+            resenya.save()
+
+            next_url_post = request.POST.get("next", None)
+            if next_url_post:
+                return redirect(f"{reverse('game', args=[pk])}?next={next_url_post}")
             else:
-                form = ReviewForm()
+                return redirect(reverse('game', args=[pk]))
+
+    form = ReviewForm()
 
     return render(request, "game.html", {
         "juego": juego,
         "similares": similares,
-        "next": next_url,
         "reviews": reviews,
-        "form": form
+        "form": form,
+        "next": next_url,
     })
+
 def game_list(request):
     q = request.GET.get('q')  # Búsqueda por título
     page_number = request.GET.get('page')  # Página actual
@@ -125,7 +124,7 @@ def guardar_juego(request, pk):
         usuario.juegos_guardados.add(juego)
 
         next_url = request.POST.get("next", None)  # Si no se pasa next, se queda como None
-
+        print(next_url)
         # Aquí no rediriges, simplemente renderizas de nuevo la página 'game'
         if next_url:
             # Se incluye el next en la URL de la respuesta
