@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
+from django.core.validators import MaxLengthValidator
 
-from .models import CustomUser
+from .models import *
 
 class CustomUserCreationForm(forms.ModelForm):
     username = forms.CharField(
@@ -58,3 +59,18 @@ class CustomUserChangeForm(UserChangeForm):
                 raise ValidationError('Solo se permiten archivos JPG o PNG.')
 
         return avatar
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['titulo', 'rating', 'texto']
+
+        widgets = {
+            'texto': forms.Textarea(attrs={'maxlength': '500', 'rows': 5, 'cols': 40}),
+        }
+
+        validators = {
+            'texto': [MaxLengthValidator(1400)],
+        }
+

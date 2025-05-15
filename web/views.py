@@ -7,8 +7,8 @@ from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 from django.views.generic import CreateView
 
-from web.forms import CustomUserCreationForm, CustomUserChangeForm
-from web.models import Videojuego, Genero, CustomUser
+from web.forms import *
+from web.models import *
 
 
 def home(request):
@@ -55,6 +55,7 @@ def home(request):
 def game(request, pk):
     juego = get_object_or_404(Videojuego, pk=pk)
     genero = juego.genero.first()
+    reviews = Review.objects.filter(videojuego=juego)
 
     similares = (
         Videojuego.objects.filter(genero__nombre__icontains=genero).exclude(pk=juego.pk)[:6]
@@ -62,11 +63,29 @@ def game(request, pk):
     )
 
     next_url = request.GET.get("next", None)
+    form = None
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                resenya = form.save(commit=False)
+                # resenya.videojuego = juego
+                resenya.usuario = Usuario.objects.get(usuario=request.user)  # provar si va amb request.user
+                resenya.videojuego = juego
+                resenya.titulo = form.cleaned_data['titulo']
+                resenya.rating = form.cleaned_data['rating']
+                resenya.texto = form.cleaned_data['texto']
+                resenya.save()
+                return redirect('game', pk=pk)
+            else:
+                form = ReviewForm()
 
     return render(request, "game.html", {
         "juego": juego,
         "similares": similares,
         "next": next_url,
+        "reviews": reviews,
+        "form": form
     })
 def game_list(request):
     q = request.GET.get('q')  # Búsqueda por título
