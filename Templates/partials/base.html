@@ -8,14 +8,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %} {% endblock %}</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     {% block styles %}{% endblock %}
 </head>
-{% block scripts %}{% endblock %}
 <body class="container pb-3">
     {% include 'partials/navbar.html' %}
     <div class="content-container">
         {% block content %} {% endblock %}
     </div>
     {% bootstrap_javascript %}
+    {% block scripts %}{% endblock %}
 </body>
 </html>

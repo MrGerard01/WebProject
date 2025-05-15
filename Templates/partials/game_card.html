@@ -1,5 +1,5 @@
 <div class="game-card">
-    <a href="{% url 'game' juego.pk %}" class="game-card">
+    <a href="{% url 'game' juego.pk %}?next={{ request.path }}" class="game-card">
         <img src="{{ juego.portada }}" alt="{{ juego.titulo }}" class="game-image">
         <h3>{{ juego.titulo }}</h3>
     </a>

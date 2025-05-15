@@ -85,15 +85,13 @@ strong {
 }
 
 .game-details-image {
-    width: 200px;
-    height: 350px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .rating-badge {
-    background-color: rgb(186, 26, 26); /* error */
-    color: rgb(255, 255, 255); /* on-error */
+    background-color: rgb(186, 26, 26);
+    color: rgb(255, 255, 255);
     padding: 4px 8px;
     border-radius: 8px;
     font-weight: bold;

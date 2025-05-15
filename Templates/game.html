@@ -15,28 +15,79 @@
     {% include 'partials/navbar.html' %}
     <div class="content-container game-details-card">
         <div class="back-button">
-            <a href="{% url 'game_list'%}">
-                <h3>&longleftarrow;Volver</h3>
-            </a>
+            {% if next %}
+                <a href="{{ next }}">
+                    <h3>&longleftarrow; Volver</h3>
+                </a>
+            {% else %}
+                <a href="{% url 'game_list' %}">
+                    <h3>&longleftarrow; Volver</h3>
+                </a>
+            {% endif %}
         </div>
         <div class="p-5 border border-1 shadow rounded">
             <div>
                 <h1>{{ juego.titulo }}</h1>
+                {% if not user.is_authenticated or not juego in user.juegos_guardados.all %}
+                    <form method="POST" action="{% url 'guardar_juego' juego.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        <button type="submit">☆</button>
+                    </form>
+                {% else %}
+                    <form method="POST" action="{% url 'quitar_juego' juego.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        <button type="submit">★</button>
+                    </form>
+                {% endif %}
             </div>
-            <div style="display: flex; margin-top: 20px;">
-                <img class="game-details-image" src="{{ juego.portada }}" style="width: 300px" alt="Imagen de {{ juego.titulo }}">
-                <div style="margin-left: 50px; margin-right: 10px">
-                    <div style="display: flex; align-items: center; justify-content: center;">
-                        <h5><strong>Fecha de lanzamiento: {{ juego.fecha_lanzamiento }} </strong></h5>
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-sm-12 col-md-5">
+                    <img src="{{ juego.portada }}" style="width: 100%; max-width: 300px" alt="Imagen de {{ juego.titulo }}">
+                </div>
+                <div class="col-sm-12 col-md-7">
+                    <div >
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <h5><strong>Fecha de lanzamiento: {{ juego.fecha_lanzamiento }} </strong></h5>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <p><strong>Rating:</strong> <span class="rating-badge">{{ juego.rating|floatformat:1 }}</span></p>
+                        </div>
+                        <p>
+                            {{ juego.descripcion }}
+                        </p>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <p><strong>Rating:</strong> <span class="rating-badge">{{ juego.rating|floatformat:1 }}</span></p>
-                    </div>
-                    <p>
-                        {{ juego.descripcion }}
-                    </p>
                 </div>
             </div>
+        </div>
+    <div class="reviews">
+            <h4>Reseñas:</h4>
+            {% if reviews %}
+                <ul>
+                {% for review in reviews %}
+                    <li>
+                        <strong>{{ review.usuario }} </strong>
+                        - Valoración: {{ review.rating }}
+                        <br>
+                        <strong>{{review.titulo}}</strong>
+                        <br>
+                        {{ review.texto }}
+                        <br>
+                        <small><i>Publicada el {{ resenya.fecha_review }}</i></small>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            {%  if form %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Enviar reseña</button>
+                </form>
+            {% else %}
+                <p><a href="{% url 'login' %}">Iniciar Sesión</a> para dejar una reseña</p>
+            {% endif %}
         </div>
         <hr>
         <div>
