@@ -183,3 +183,24 @@ def eliminar_review(request, review_id):
     review.delete()
     messages.success(request, "Reseña eliminada correctamente.")
     return redirect(f"{reverse('game', args=[juego.pk])}?next={next_url}")
+
+@login_required
+def editar_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id)
+    juego = review.videojuego
+    next_url_post = request.POST.get("next", None)
+
+    if review.usuario != request.user:
+        messages.error(request, "No tienes permiso para editar esta reseña.")
+        return redirect('home')  # cambia esto por tu vista principal
+
+    if request.method == "POST":
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+
+            return redirect(f"{reverse('game', args=[juego.pk])}?next={next_url_post}")
+        else:
+            form = ReviewForm()
+
+    return redirect(f"{reverse('game', args=[juego.pk])}?next={next_url_post}")

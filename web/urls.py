@@ -12,4 +12,5 @@ urlpatterns = [
     path('games/', views.game_list, name='game_list'),
     path('perfil/', views.pagina_perfil, name='pagina_perfil'),
     path('review/<int:review_id>/eliminar/', views.eliminar_review, name='eliminar_review'),
+    path('review/<int:review_id>/editar/', views.editar_review, name='editar_review'),
 ]
