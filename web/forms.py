@@ -63,26 +63,26 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class ReviewForm(forms.ModelForm):
-    RATING_CHOICES = [
-        (1, '1 - Muy malo'),
-        (2, '2 - Malo'),
-        (3, '3 - Regular'),
-        (4, '4 - Bueno'),
-        (5, '5 - Excelente'),
-    ]
-
-    rating = forms.ChoiceField(choices=RATING_CHOICES, widget=forms.Select())
-
-    texto = forms.CharField(
-        max_length=1500,
-        widget=forms.Textarea(attrs={
-            'rows': 5,
-            'style': 'resize:none;',  # Desactiva cambiar tamaño
-            'placeholder': 'Escribe tu opinión aquí...'
-        }),
-        required=False,
-    )
-
     class Meta:
         model = Review
-        fields = ['titulo', 'rating', 'texto']
+        fields = ['titulo', 'texto', 'rating']
+        widgets = {
+            'titulo': forms.TextInput(attrs={
+                'class': 'form-control',
+                'id': 'floatingTitulo',
+                'placeholder': 'Título de la reseña'
+            }),
+            'texto': forms.Textarea(attrs={
+                'class': 'form-control',
+                'id': 'floatingContenido',
+                'placeholder': 'Escribe tu reseña',
+                'style': 'resize:none; height: 150px',
+            }),
+            'rating': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'id': 'floatingPuntuacion',
+                'placeholder': 'Puntúa del 0 al 10',
+                'min': 0,
+                'max': 10
+            }),
+        }

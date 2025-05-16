@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/reviews.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body class="container pb-3">
     {% include 'partials/navbar.html' %}
@@ -73,14 +74,9 @@
         <div class="reviews">
             <h3>Reseñas:</h3>
             <div class="row justify-content-center">
-                <div class="col-7 align-self-center">
+                <div class="col-8 align-self-center">
                     {%  if user.is_authenticated %}
-                        <form method="post">
-                            {% csrf_token %}
-                            {% bootstrap_form form %}
-                            <input type="hidden" name="next" value="{{ next }}">
-                            <button type="submit">Enviar reseña</button>
-                        </form>
+                        {% include 'partials/review_form.html' %}
                     {% else %}
                         <p><a href="{% url 'login' %}">Iniciar Sesión</a> para dejar una reseña</p>
                     {% endif %}

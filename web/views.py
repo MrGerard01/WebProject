@@ -1,4 +1,5 @@
 import requests
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpRequest
@@ -169,3 +170,16 @@ def pagina_perfil(request):
         form = CustomUserChangeForm(instance=user)
 
     return render(request, 'perfil.html', {'form': form, 'juegos': juegos_favoritos})
+
+@login_required
+def eliminar_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id)
+    juego = review.videojuego
+    next_url = request.POST.get("next", None)
+    if review.usuario != request.user:
+        messages.error(request, "No tienes permiso para eliminar esta reseña.")
+        return redirect('home')  # cambia esto por tu vista principal
+
+    review.delete()
+    messages.success(request, "Reseña eliminada correctamente.")
+    return redirect(f"{reverse('game', args=[juego.pk])}?next={next_url}")

@@ -1,0 +1,32 @@
+<div class="reviews-list">
+  {% for review in reviews %}
+    <div class="review-card">
+      <div class="review-header">
+        <strong>{{ review.usuario.username }}</strong>
+        <span class="review-rating">
+          {% for i in "12345" %}
+            {% if forloop.counter <= review.rating %}
+              ★
+            {% else %}
+              ☆
+            {% endif %}
+          {% endfor %}
+        </span>
+        {% if review.usuario == request.user %}
+          <form action="{% url 'eliminar_review' review.id %}" method="post" class="d-inline">
+            {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar esta reseña?')">
+                  <i class="bi bi-trash"></i> Eliminar
+                </button>
+          </form>
+        {% endif %}
+      </div>
+      <h5>{{ review.titulo }}</h5>
+      <p>{{ review.texto|truncatechars:300 }}</p>
+      <small>Publicado {{ review.fecha_review|date:"d M Y" }}</small>
+    </div>
+  {% empty %}
+    <p>No hay reseñas aún.</p>
+  {% endfor %}
+</div>
