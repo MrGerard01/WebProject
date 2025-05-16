@@ -1,56 +1,37 @@
 <div class="reviews-list">
-  {% for review in reviews %}
-    <div class="review-card">
-      <div class="review-header">
-        <strong>{{ review.usuario.username }}</strong>
-        <span class="review-rating">
-          {% for i in "12345" %}
-            {% if forloop.counter <= review.rating %}
-              ★
-            {% else %}
-              ☆
-            {% endif %}
-          {% endfor %}
-        </span>
-        {% if review.usuario == request.user %}
-          <form action="{% url 'eliminar_review' review.id %}" method="post" class="d-inline">
-            {% csrf_token %}
-                <input type="hidden" name="next" value="{{ next }}">
-                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar esta reseña?')">
-                  <i class="bi bi-trash"></i> Eliminar
-                </button>
-          </form>
-            <button type="button" class="btn btn-sm btn-outline-primary"
-                    onclick="toggleForm('form-{{ review.id }}')">
-                <i class="bi bi-pencil"></i> Editar
-            </button>
-           <form id="form-{{ review.id }}" action="{% url 'editar_review' review.id %}" method="post" class="mb-3" style="display: none;">
-            {% csrf_token %}
-                <input type="hidden" name="next" value="{{ next }}">
-                {{form.as_p}}
-                <button type="submit" class="btn btn-sm btn-outline-danger">
-                  <i class="bi bi-pencil"></i> Guardar
-                </button>
-            </form>
-
-        {% endif %}
-      </div>
-      <h5>{{ review.titulo }}</h5>
-      <p>{{ review.texto|truncatechars:300 }}</p>
-      <small>Publicado {{ review.fecha_review|date:"d M Y" }}</small>
-    </div>
-  {% empty %}
-    <p>No hay reseñas aún.</p>
-  {% endfor %}
+    {% for review in reviews %}
+        <div class="review-card">
+            <div class="review-header">
+                <strong>{{ review.usuario.username }}</strong>
+                <span class="review-rating">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= review.rating %}
+                            ★
+                        {% else %}
+                            ☆
+                        {% endif %}
+                    {% endfor %}
+                </span>
+                {% if review.usuario == request.user %}
+                    <form action="{% url 'eliminar_review' review.id %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar esta reseña?')">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </form>
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editarModal-{{ review.id }}">
+                        <i class="bi bi-pencil"></i> Editar
+                    </button>
+                    {% include 'partials/edit_review.html' %}
+                {% endif %}
+            </div>
+            <h5 class="titulo">{{ review.titulo }}</h5>
+            <p>{{ review.texto|truncatechars:300 }}</p>
+            <small>Publicado {{ review.fecha_review|date:"d M Y" }}</small>
+        </div>
+    {% empty %}
+        <p>No hay reseñas aún.</p>
+    {% endfor %}
 </div>
 
-<script>
-function toggleForm(formId) {
-  const form = document.getElementById(formId);
-  if (form.style.display === 'none' || form.style.display === '') {
-    form.style.display = 'block';
-  } else {
-    form.style.display = 'none';
-  }
-}
-</script>
