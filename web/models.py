@@ -22,11 +22,11 @@ class Videojuego(models.Model):
 
 class Review(models.Model):
     titulo = models.CharField('Título', max_length=255)
-    rating = models.FloatField(null=True, blank=True)
+    rating = models.IntegerField(null=True, blank=True)
     texto = models.TextField(null=True, blank=True)
     videojuego = models.ForeignKey(Videojuego, on_delete=models.CASCADE)  # Permitimos múltiples reviews por juego
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews')
-    fecha_review = models.DateField(null=True, blank=True)
+    fecha_review = models.DateField(auto_now_add=True)
     def __str__(self):
         return self.titulo
 

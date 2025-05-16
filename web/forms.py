@@ -1,4 +1,5 @@
 from django import forms
+from .models import Review
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxLengthValidator
@@ -64,13 +65,24 @@ class CustomUserChangeForm(UserChangeForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['titulo', 'rating', 'texto']
-
+        fields = ['titulo', 'texto', 'rating']
         widgets = {
-            'texto': forms.Textarea(attrs={'maxlength': '500', 'rows': 5, 'cols': 40}),
+            'titulo': forms.TextInput(attrs={
+                'class': 'form-control',
+                'id': 'floatingTitulo',
+                'placeholder': 'Título de la reseña'
+            }),
+            'texto': forms.Textarea(attrs={
+                'class': 'form-control',
+                'id': 'floatingContenido',
+                'placeholder': 'Escribe tu reseña',
+                'style': 'resize:none; height: 150px',
+            }),
+            'rating': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'id': 'floatingPuntuacion',
+                'placeholder': 'Puntúa del 0 al 10',
+                'min': 0,
+                'max': 10
+            }),
         }
-
-        validators = {
-            'texto': [MaxLengthValidator(1400)],
-        }
-

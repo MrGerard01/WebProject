@@ -1,0 +1,40 @@
+<div class="container py-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="mb-4">Escribir una reseña</h3>
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <!-- Título -->
+                <div class="form-floating mb-3">
+                    {{ form.titulo }}
+                    <label for="floatingTitulo">Título</label>
+                    {% if form.titulo.errors %}
+                        <div class="text-danger small mt-1">{{ form.titulo.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Contenido -->
+                <div class="form-floating mb-3">
+                    {{ form.texto }}
+                    <label for="floatingContenido">Texto</label>
+                    {% if form.texto.errors %}
+                        <div class="text-danger small mt-1">{{ form.texto.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <!-- Puntuación -->
+                <div class="form-floating mb-4">
+                    {{ form.rating }}
+                    <label for="floatingPuntuacion">Rating (0–10)</label>
+                    {% if form.rating.errors %}
+                        <div class="text-danger small mt-1">{{ form.rating.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Publicar reseña</button>
+            </form>
+        </div>
+    </div>
+</div>
